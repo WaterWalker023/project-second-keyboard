@@ -5,11 +5,16 @@ SetWorkingDir, %A_ScriptDir%
 isdubblekey = 0
 null := ""
 DetectHiddenWindows, On
-Run, C:\Users\tomst\Desktop\Programs\luamacros\LuaMacros.exe -r "C:\Users\tomst\Desktop\AHK\macrokeyboardv3\macrokeyboard.lua",,,luamacros
+Run, luamacros\LuaMacros.exe -r "macrokeyboard.lua",,,luamacros
+
+FileRead, forcereloadkey, forcereloadkey.txt
+
+
+Hotkey %forcereloadkey%, reload
 
 OnExit("ExitFunc")
 
-secondkeys := ["~NumpadEnter", "~NumpadHome", "~NumpadUp", "~NumpadPgup","~NumpadLeft","~NumpadRight","~NumpadEnd", "~numpaddown", "~NumpadPgdn","~numpadins","~NumpadDel", "~RShift", "~RControl", "~RAlt"]
+secondkeys := ["~NumpadEnter up", "~NumpadHome up", "~NumpadUp up", "~NumpadPgup up","~NumpadLeft up","~NumpadRight up","~NumpadEnd up", "~numpaddown up", "~NumpadPgdn up","~numpadins up","~NumpadDel up", "~RShift up", "~RControl up", "~RAlt up"]
 For k, v in secondkeys
 {
     Hotkey %V%, setdubblekey
@@ -49,13 +54,6 @@ F24::
 
     lastkey = %macro%
     lastkeyboard = %usedkeyboard%
-Return
-
-Launch_Mail::
-    while WinExist("ahk_exe LuaMacros.exe"){
-        WinClose ahk_exe LuaMacros.exe
-    }
-    Reload
 Return
 
 toggle:
