@@ -56,32 +56,6 @@ F24::
     lastkeyboard = %usedkeyboard%
 Return
 
-toggle:
-    toggle0 := ""
-    toggle1 := ""
-
-
-    FileReadLine, toggle0, keyboard/%usedkeyboard%/%macro%.txt, 3
-    FileReadLine, toggle1, keyboard/%usedkeyboard%/%macro%.txt, 4
-    IfNotExist, togglestatus/%usedkeyboard%/%macro%.txt
-    {
-        FileAppend, 0, togglestatus/%usedkeyboard%/%macro%.txt
-    }
-    FileReadLine, togglestatus, togglestatus/%usedkeyboard%/%macro%.txt, 1
-    If (togglestatus = 1)
-    {
-        send, %toggle0%
-        FileDelete, togglestatus/%usedkeyboard%/%macro%.txt
-        FileAppend, 0, togglestatus/%usedkeyboard%/%macro%.txt
-    }
-    Else
-    {
-        send, %toggle1%
-        FileDelete, togglestatus/%usedkeyboard%/%macro%.txt
-        FileAppend, 1, togglestatus/%usedkeyboard%/%macro%.txt
-    }
-Return
-
 waitrest:
     restisdubblekey(isdubblekey)
     SetTimer, waitrest, off
@@ -123,6 +97,32 @@ Loop, read, keyboard/%usedkeyboard%/%macro%.txt
     }
     sleep senddelay
 }
+Return
+
+toggle:
+    toggle0 := ""
+    toggle1 := ""
+
+
+    FileReadLine, toggle0, keyboard/%usedkeyboard%/%macro%.txt, 3
+    FileReadLine, toggle1, keyboard/%usedkeyboard%/%macro%.txt, 4
+    IfNotExist, togglestatus/%usedkeyboard%/%macro%.txt
+    {
+        FileAppend, 0, togglestatus/%usedkeyboard%/%macro%.txt
+    }
+    FileReadLine, togglestatus, togglestatus/%usedkeyboard%/%macro%.txt, 1
+    If (togglestatus = 1)
+    {
+        send, %toggle0%
+        FileDelete, togglestatus/%usedkeyboard%/%macro%.txt
+        FileAppend, 0, togglestatus/%usedkeyboard%/%macro%.txt
+    }
+    Else
+    {
+        send, %toggle1%
+        FileDelete, togglestatus/%usedkeyboard%/%macro%.txt
+        FileAppend, 1, togglestatus/%usedkeyboard%/%macro%.txt
+    }
 Return
 
 run:
