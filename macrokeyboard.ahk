@@ -9,7 +9,6 @@ Run, luamacros\LuaMacros.exe -r "macrokeyboard.lua",,,luamacros
 
 FileRead, forcereloadkey, forcereloadkey.txt
 
-
 Hotkey %forcereloadkey%, reload
 
 OnExit("ExitFunc")
@@ -51,7 +50,6 @@ F24::
     }
     Gosub, %typefucntion%
 
-
     lastkey = %macro%
     lastkeyboard = %usedkeyboard%
 Return
@@ -77,7 +75,7 @@ FileReadLine, senddelay, keyboard/%usedkeyboard%/%macro%.txt, 3
 senddelay := varcheck(senddelay)
 
 enteronrlineend := ""
-FileReadLine, senddelay, keyboard/%usedkeyboard%/%macro%.txt, 4
+FileReadLine, enteronrlineend, keyboard/%usedkeyboard%/%macro%.txt, 4
 enteronrlineend := varcheck(enteronrlineend)
 
 Loop, read, keyboard/%usedkeyboard%/%macro%.txt
@@ -102,7 +100,6 @@ Return
 toggle:
     toggle0 := ""
     toggle1 := ""
-
 
     FileReadLine, toggle0, keyboard/%usedkeyboard%/%macro%.txt, 3
     FileReadLine, toggle1, keyboard/%usedkeyboard%/%macro%.txt, 4
@@ -151,6 +148,14 @@ while WinExist("ahk_exe LuaMacros.exe"){
 Reload
 Return
 
+website:
+openprogram := ""
+FileReadLine, openprogram, keyboard/%usedkeyboard%/%macro%.txt, 3
+openprogram := varcheck(openprogram)
+
+run, %openprogram%
+Return
+
 tooltip:
 showtooltip := ""
 FileReadLine, showtooltip, keyboard/%usedkeyboard%/%macro%.txt, 3
@@ -161,6 +166,7 @@ Return
 Shutdown:
 shutdowncode := ""
 FileReadLine, shutdowncode, keyboard/%usedkeyboard%/%macro%.txt, 3
+FileReadLine, confirmtooltip, keyboard/%usedkeyboard%/%macro%.txt, 4
 shutdowncode := varcheck(shutdowncode)
 If (lastkey = macro)
 {
@@ -169,7 +175,7 @@ If (lastkey = macro)
         Shutdown, %shutdowncode%
     }
 }
-ToolTip, confirm Shutdown
+ToolTip, %confirmtooltip%
 Return
 
 toggleapp:
@@ -217,19 +223,20 @@ runappontaskbar:
     }
 Return
 
+togglesend:
+
+Return
+
 checkluamacros:
     IfWinNotExist, ahk_pid %luamacros%
         ExitApp
 Return
 
-togglesend:
-
-Return
 
 varcheck(string)
 {
     WinGet, openprogramworking, ProcessPath , % "ahk_id" winActive("A")
-    SplitPath, openprogramworking,openprogram, openprogramdir, openprogramname, openprogramdrive
+    SplitPath, openprogramworking,openprogram, openprogramdir,, openprogramname, openprogramdrive
 
     FileRead, macro, macrokeyboard.txt
     FileRead, usedkeyboard, thekeyboard.txt
@@ -238,19 +245,19 @@ varcheck(string)
     StringReplacewith = %Clipboard%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%openprogram%"
+    StringtoReplace := "%Open Program%"
     StringReplacewith = %openprogram%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%openprogramdir%"
+    StringtoReplace := "%Open Program Dir%"
     StringReplacewith = %openprogramdir%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%openprogramname%"
+    StringtoReplace := "%Open Program Name%"
     StringReplacewith = %openprogramname%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%openprogramdrive%"
+    StringtoReplace := "%Open Program Drive%"
     StringReplacewith = %openprogramdrive%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
@@ -262,8 +269,8 @@ varcheck(string)
         StringReplacewith = %A_YYYY%
         StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-        StringtoReplace := "%A_MM%"
-        StringReplacewith = %MM%
+        StringtoReplace := "%MM%"
+        StringReplacewith = %A_MM%
         StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
         StringtoReplace := "%DD%"
@@ -331,19 +338,15 @@ varcheck(string)
     StringReplacewith = %macro%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%Keyboardname%"
+    StringtoReplace := "%Keyboard Name%"
     StringReplacewith = %usedkeyboard%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%ComSpec%"
-    StringReplacewith = %A_ComSpec%
-    StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
-
-    StringtoReplace := "%TempDir%"
+    StringtoReplace := "%Temp Dir%"
     StringReplacewith = %A_Temp%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%ComputerName%"
+    StringtoReplace := "%Computer Name%"
     StringReplacewith = %A_ComputerName%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
@@ -359,11 +362,11 @@ varcheck(string)
     StringReplacewith = %A_StartMenu%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%StartMenuCommon%"
+    StringtoReplace := "%StartMenu Common%"
     StringReplacewith = %A_StartMenuCommon%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
-    StringtoReplace := "%MyDocuments%"
+    StringtoReplace := "%My Documents%"
     StringReplacewith = %A_MyDocuments%
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
@@ -373,18 +376,6 @@ varcheck(string)
 
     StringtoReplace := "%False%"
     StringReplacewith = %False%
-    StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
-
-    StringtoReplace := "%openprogramdir%"
-    StringReplacewith = %openprogramdir%
-    StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
-
-    StringtoReplace := "{f24}"
-    StringReplacewith := ""
-    StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
-
-    StringtoReplace := "{F24}"
-    StringReplacewith := ""
     StringReplace, string, string, %StringtoReplace% , %StringReplacewith%, All
 
     Return string
